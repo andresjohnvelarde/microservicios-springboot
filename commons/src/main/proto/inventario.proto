@@ -1,0 +1,12 @@
+syntax = "proto3";
+option java_package = "com.clase2.inventario.grpc";
+option java_multiple_files = true;
+service InventarioService {
+  rpc GetStock(StockRequest) returns (StockResponse);
+}
+message StockRequest{
+  int64 productoid = 1;
+}
+message  StockResponse{
+  int32 cantidad = 1;
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <property name="NOMBRE_APP" value="${spring.application.name:-orden-service}"/>
+    <property name="ARCHIVO_LOG" value="logs/${NOMBRE_APP}.log"/>
+    <appender name="ARCHIVO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${ARCHIVO_LOG}</file>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/${spring.application.name}-%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="ARCHIVO"/>
+    </root>
+</configuration>

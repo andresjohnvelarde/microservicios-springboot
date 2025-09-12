@@ -1,0 +1,99 @@
+version: '3.8'
+services:
+  servidor-eureka:
+    build:
+      context: .
+      dockerfile: servidor-eureka/Dockerfile
+      args:
+        SERVICE_NAME: servidor-eureka
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_TOOL_OPTIONS=-Xms256m -Xmx384m
+    mem_limit: 512m
+    cpus: 0.25
+    networks:
+      - sbanet
+
+  servidor-config:
+    build:
+      context: .
+      dockerfile: servidor-config/Dockerfile
+      args:
+        SERVICE_NAME: servidor-config
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_TOOL_OPTIONS=-Xms256m -Xmx384m
+    mem_limit: 512m
+    cpus: 0.25
+    networks:
+      - sbanet
+    depends_on:
+      - servidor-eureka
+
+  producto-service:
+    build:
+      context: .
+      dockerfile: producto-service/Dockerfile
+      args:
+        SERVICE_NAME: producto-service
+    ports:
+      - "8093:8093"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_TOOL_OPTIONS=-Xms256m -Xmx384m
+    mem_limit: 512m
+    cpus: 0.25
+    depends_on:
+      - servidor-config
+      - servidor-eureka
+    networks:
+      - sbanet
+
+  orden-service:
+    build:
+      context: .
+      dockerfile: orden-service/Dockerfile
+      args:
+        SERVICE_NAME: orden-service
+    ports:
+      - "8094:8094"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_TOOL_OPTIONS=-Xms256m -Xmx384m
+    mem_limit: 512m
+    cpus: 0.25
+    depends_on:
+      - servidor-config
+      - servidor-eureka
+      - producto-service
+    networks:
+      - sbanet
+
+  inventario-service:
+    build:
+      context: .
+      dockerfile: inventario-service/Dockerfile
+      args:
+        SERVICE_NAME: inventario-service
+    ports:
+      - "8095:8095"
+      - "9009:9009" #gRPC
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JAVA_TOOL_OPTIONS=-Xms256m -Xmx384m
+    mem_limit: 512m
+    cpus: 0.25
+    depends_on:
+      - servidor-config
+      - servidor-eureka
+      - producto-service
+    networks:
+      - sbanet
+
+networks:
+  sbanet:
+    external: true
