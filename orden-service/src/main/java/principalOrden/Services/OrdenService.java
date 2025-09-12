@@ -75,8 +75,3 @@ public class OrdenService {
         return ordenRepository.save(orden);
     }
 }
-
-// Imágenes de Docker a descargar:
-// openzipkin/zipkin
-// grafana/grafana
-// prom/prometheus

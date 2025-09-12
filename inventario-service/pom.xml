@@ -54,6 +54,12 @@
             <artifactId>commons</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>3.3.8</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <artifactId>inventario-service</artifactId>
 
@@ -79,6 +85,10 @@
                 <version>${spring-grpc.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>
