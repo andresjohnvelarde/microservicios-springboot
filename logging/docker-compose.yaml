@@ -8,6 +8,7 @@ services:
       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
       - C:\Users\andre\Desktop\Curso-Springboot-Avanzado\19082025\producto-service\target\logs:/host-logs:ro
       - C:\Users\andre\Desktop\Curso-Springboot-Avanzado\19082025\orden-service\target\logs:/host-logs2:ro
+      - C:\Users\andre\Desktop\Curso-Springboot-Avanzado\19082025\inventario-service\target\logs:/host-logs3:ro
     command: bash -c "chmod go-w /usr/share/filebeat/filebeat.yml && filebeat -e"
     depends_on:
       - logstash
@@ -37,11 +38,14 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - network.host=0.0.0.0
+      - http.host=0.0.0.0
+      - http.port=9200
     ports:
       - "9200:9200"
     volumes:
       - esdata:/usr/share/elasticsearch/data
-    mem_limit: 512m
+    mem_limit: 1g
     cpus: 0.25
     networks:
       - sbanet

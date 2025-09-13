@@ -1,5 +1,6 @@
 package productoPrincipal.Services;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,19 +14,19 @@ import productoPrincipal.Repositories.ProductoRepository;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductoService {
     private static final Logger logger = LoggerFactory.getLogger(ProductoService.class);
     @Autowired
     private ProductoRepository repository;
 
-    private KafkaProductoEventoProducer kafkaProductoEventoProducer;
+    private final KafkaProductoEventoProducer kafkaProductoEventoProducer;
 
     public Producto registrar(Producto prod) {
         logger.info("Se procede a registrar un producto: ", prod);
-        
+
         kafkaProductoEventoProducer.enviarProductoEvento(
                 new ProductoEvent(
-                        prod.getId(),
                         prod.getNombre(),
                         prod.getPrecio()
                 )
